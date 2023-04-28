@@ -12,7 +12,12 @@ function App() {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    model = await tf.loadModel('model/model.json')
+      const modelPath = "./model/model.json";
+    const model = await tf.loadLayersModel(`file://${modelPath}`);
+    if (!model) {
+      console.log("Failed to load model");
+      return;
+    }
     let prediction = model.predict([String(inputText)])
     const myArray = ['AddToPlaylist', 'BookRestaurant', 'GetWeather', 'PlayMusic', 'RateBook', 'SearchCreativeWork', 'SearchScreeningEvent'];
     let i = prediction.indexOf(Math.max(...prediction));
